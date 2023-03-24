@@ -23,23 +23,15 @@ class GeneralModel:
 
         # arguments to send the API
         kwargs = {
-            "engine": "text-davinci-002",
-            "temperature": 0.85,
+            "temperature": 0.9,
             "max_tokens": 600,
-            "best_of": 1,
-            "top_p": 1,
-            "frequency_penalty": 0,
-            "presence_penalty": 0,
-            "stop": ["###"],
         }
 
         for kwarg in myKwargs:
             kwargs[kwarg] = myKwargs[kwarg]
 
-        r = openai.Completion.create(prompt=prompt, **kwargs)["choices"][0][
-            "text"
-        ].strip()
-        return r
+        r = openai.ChatCompletion.create(model="gpt-4", messages=[{"role": "system", "content": prompt}], **kwargs)
+        return r["choices"][0]["message"]["content"].strip()
 
     def model_prediction(self, inp, api_key):
         """
